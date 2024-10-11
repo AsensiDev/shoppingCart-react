@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 import Cart from './components/Cart'
 import { useState } from 'react'
 import useFilters from './hooks/useFilters'
+import { CartProvider } from './context/cart'
 
 
 
@@ -15,12 +16,12 @@ export default function App() {
   const filteredProducts = filterProducts(products)
 
   return (
-    <>
+    <CartProvider>
       <Cart />
       <Header/>
       <Products products={filteredProducts}/>
       <Footer />
-    </>
+    </CartProvider>
   )
 }
 

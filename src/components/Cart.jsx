@@ -1,11 +1,35 @@
 import { CartIcon, ClearCartIcon } from './Icons'
 import { useId, useState } from 'react'
 import './Cart.css'
+import { useCart } from '../hooks/useCart'
+
+function CartItem({ thumbnail, price, title, quantity, addToCart}) {
+
+    return (
+        <li>
+            <img 
+                src={thumbnail}
+                alt={title}
+                width='200'
+                />
+            <div>
+                <strong>Iphone</strong> - ${price}
+            </div>
+
+            <div>
+                <small>
+                    Qty: {quantity}
+                </small>
+                <button onClick={addToCart} >+</button>
+            </div>
+        </li>
+    )
+}
 
 export default function Cart() {
 
     const cartCheckboxId = useId()
-    const [quantity, setQuantity] = useState(1)
+    const { cart, clearCart, addToCart } = useCart()
 
   return (
     <>
@@ -16,26 +40,16 @@ export default function Cart() {
 
         <aside className="cart">
             <ul>
-                <li>
-                    <img 
-                        src="https://media.direct.playstation.com/is/image/psdglobal/PS5PRO-Hero-1" 
-                        alt="iphone photo" 
-                        width='200'
+                {cart.map(product => (
+                    <CartItem 
+                        key={product.id} 
+                        {...product} 
+                        addToCart={() => addToCart(product)}
                     />
-                    <div>
-                        <strong>Iphone</strong> - $1499
-                    </div>
-
-                    <div>
-                        <small>
-                            Qty: {quantity}
-                        </small>
-                        <button onClick={() => setQuantity(quantity + 1)}>+</button>
-                    </div>
-                </li>
+                ))}
             </ul>
 
-            <button>
+            <button onClick={clearCart}>
                 <ClearCartIcon />
             </button>
         </aside>
